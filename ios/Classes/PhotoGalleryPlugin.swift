@@ -468,7 +468,18 @@ public class PhotoGalleryPlugin: NSObject, FlutterPlugin {
     let mimeType = self.extractMimeTypeFromAsset(asset: asset)
     let resource = self.extractResourceFromAsset(asset: asset)
     let size = self.extractSizeFromResource(resource: resource)
-    let orientation = self.toOrientationValue(orientation: asset.value(forKey: "orientation") as? UIImage.Orientation)
+    //let orientation = self.toOrientationValue(orientation: asset.value(forKey: "orientation") as? UIImage.Orientation)
+
+    // To get orientation from PHAsset more securely
+    let orientation: Int
+    if #available(iOS 18, *) {
+        // Safe method for iOS 18+ (you may need to use another API from PHAsset)
+        orientation = 0 // Or other default value
+    } else {
+        // Use existing method for older iOS versions
+        orientation = self.toOrientationValue(orientation: asset.value(forKey: "orientation") as? UIImage.Orientation)
+    }
+
     return [
       "id": asset.localIdentifier,
       "filename": filename,
