@@ -229,14 +229,18 @@ public class PhotoGalleryPlugin: NSObject, FlutterPlugin {
     let total = fetchResult.count
     let end = take == nil ? total : min(start + take!.intValue, total)
     var items = [[String: Any?]]()
-    for index in start..<end {
-      let asset = fetchResult.object(at: index) as PHAsset
-      if(lightWeight == true) {
-        items.append(getMediumFromAssetLightWeight(asset: asset))
-      } else {
-        items.append(getMediumFromAsset(asset: asset))
+
+    if start < end {
+      for index in start..<end {
+        let asset = fetchResult.object(at: index) as PHAsset
+        if(lightWeight == true) {
+          items.append(getMediumFromAssetLightWeight(asset: asset))
+        } else {
+          items.append(getMediumFromAsset(asset: asset))
+        }
       }
     }
+    
 
     return [
       "start": start,
